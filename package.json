@@ -1,0 +1,19 @@
+{
+  "name": "node_db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^6.15.0",
+    "uuid": "^8.3.2"
+  }
+}
