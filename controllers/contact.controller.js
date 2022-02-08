@@ -3,9 +3,9 @@ const db = require('../models')
 
 // Main model
 
-const Clubs = db.contacts
+const Contacts = db.contacts
 
-//  Create  Clubs
+//  Create  Contacts
 
 
 

@@ -4,15 +4,13 @@ const contactController = require('../controllers/contact.controller')
 
 const router = require('express').Router()
 
-router.post('/addClub', clubController.addClub)
+router.post('/addUser', userController.addUser)
 
-router.get('/allClub', clubController.getAllclubs)
+router.get('/getAllusers', userController.getAllusers)
 
-router.get('/oneClub/:id', clubController.getOneclubs)
+router.get('/getOneUser/:id', userController.getOneUser)
 
-router.put('/editClub/:id', clubController.Updateclubs)
-
-router.delete('/deleteClub', clubController.Deleteclubs)
+router.get('/getUserDetails/:id', userController.getUserDetails)
 
 
 module.exports = router

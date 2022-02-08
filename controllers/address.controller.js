@@ -3,10 +3,10 @@ const db = require('../models')
 
 // Main model
 
-const Clubs = db.address
+const Address = db.address
 
 
-//  Create  Clubs
+//  Create  Address
 
 
 
