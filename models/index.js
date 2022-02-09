@@ -1,54 +1,37 @@
-const dbConfig = require('../config/db.config.js');
+'use strict';
 
-const {Sequelize , DataTypes} = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
+const db = {};
 
-const sequelize = new Sequelize(
-    dbConfig.DB,
-    dbConfig.USER,
-    dbConfig.PASSWORD,
-    {
-        host:dbConfig.Hostname,
-        dialect: dbConfig.dialect,        
-    }     
-)
-
-sequelize.authenticate()
-.then(()=>{
-    console.log("Connected..")
-})
-.catch(err=>{
-    console.log(" error" + err)
-})
-
-const db = {}
-
-db.Sequelize = Sequelize
-
-db.sequelize = sequelize
-
-db.address = require('./address.models.js')(sequelize, DataTypes)
-db.contacts = require('./contact.models.js')(sequelize, DataTypes)
-db.users = require('./users.models.js')(sequelize, DataTypes)
-
-db.sequelize.sync({force: false})  // if true loss data everytime running app
-.then(()=> {
-    console.log('sync is done')
-})
-
-
-db.users.associate = (db) => {
-    db.users.hasMany(db.contacts,{ foreignKey: 'contact_details.id', as:'contacts'})
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-db.contacts.associate = (db) => {
-    db.contacts.hasMany(db.address,{foreignKey: 'address.id', as:'address'})
-    db.contacts.belongsTo(db.users, { foreignKey: 'users.id', as: 'users' });
-   
-};
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
 
-db.address.associate = (db) => {
-    db.address.belongsTo(db.contacts, { foreignKey: 'contacts.id', as: 'contacts' });
-};
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-module.exports = db
+module.exports = db;

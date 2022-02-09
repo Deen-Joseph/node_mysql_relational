@@ -1,6 +1,14 @@
+
+
 module.exports = (sequelize,DataTypes) =>{
 
-    const Users = sequelize.define("users",{
+    const Users = sequelize.define("Users",{
+      
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+          },
         username :{
             type: DataTypes.STRING,
             allowNull: false
@@ -16,12 +24,16 @@ module.exports = (sequelize,DataTypes) =>{
             allowNull: false
         },
 
-        contact_info :{
-            type: DataTypes.STRING,
-            allowNull: false
-        }
+        
+        
 
     });
+
+    Users.associate = (models) => {
+        Users.hasOne(models.Contacts, {
+          foreignKey: "Users.id",
+        });
+      }
 
     return Users
 

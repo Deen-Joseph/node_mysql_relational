@@ -1,6 +1,7 @@
+
 module.exports = (sequelize,DataTypes) =>{
 
-    const Address = sequelize.define("address",{
+    const Address = sequelize.define("Address",{
         address_line1 :{
             type: DataTypes.STRING,
             allowNull: false
@@ -17,11 +18,18 @@ module.exports = (sequelize,DataTypes) =>{
         },
 
         country :{
-            type: DataTypes.STRING,
+            type: DataTypes.ENUM({values:["IN", "US", "CA"]}),            
             allowNull:false
-        }
+        },
+
 
     });
+    
+    Address.associate = (models) => {
+        Address.belongsTo(models.Contacts, {
+          foreignKey: "Contacts.id",
+        });
+      }
 
     return Address
 
