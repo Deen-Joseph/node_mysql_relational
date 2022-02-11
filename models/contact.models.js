@@ -9,7 +9,14 @@ module.exports = (sequelize,DataTypes) =>{
 
         phone_number :{
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate:{
+              isNumeric: true,
+              len:{
+                args:[10],
+                msg :" Max 10 numbers, no country code required !"
+              } 
+            }
         },        
        
 
@@ -18,11 +25,11 @@ module.exports = (sequelize,DataTypes) =>{
     Contacts.associate = (models) => {
         
         Contacts.belongsTo(models.Users, {
-          foreignKey: "Users.id",
+          foreignKey: "userId",
         });
 
         Contacts.hasOne(models.Address, {
-            foreignKey: "Contacts.id",
+            foreignKey: "contactsId",
           });
         
     } 
